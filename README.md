@@ -34,6 +34,25 @@ bun run dev
 
 Then open the printed URL (default http://localhost:5173).
 
+## Docker
+
+Build and run with Docker Compose (uses [Dockerfile](Dockerfile:1) + [docker-compose.yml](docker-compose.yml:1)). The container runs the built SvelteKit server (`node build/index.js`).
+
+```bash
+docker compose up --build
+```
+
+The app listens on port 3000. Data volumes:
+
+- `./data` -> `/data` (for SQLite db, etc.)
+- `./uploads` -> `/uploads` (for uploaded assets)
+
+Stop and clean containers/images/volumes with:
+
+```bash
+docker compose down
+```
+
 ## Scripts (see [package.json](package.json:1))
 
 - Dev server: `bun run dev`
