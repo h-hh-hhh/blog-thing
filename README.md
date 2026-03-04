@@ -1,42 +1,81 @@
-# sv
+# blog-thing
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Somewhat vibecoded blog app with mdsvex/markdown rendering, built on SvelteKit and SQLite.
 
-## Creating a project
+## Overview
 
-If you're seeing this, you've probably already done this step. Congrats!
+- SvelteKit app using mdsvex for markdown+Svelte posts, styled with shadcn-svelte.
+- SQLite via drizzle-orm; current demo schema lives in [src/lib/server/db/schema.ts](src/lib/server/db/schema.ts:1).
+- Bun-based tooling (can use pnpm/npm if you prefer).
 
-```sh
-# create a new project
-npx sv create my-app
+## Prerequisites
+
+- Node 20+ (or Bun 1.1+). If using Node, install deps with your package manager instead of Bun.
+
+## Setup
+
+1) Install dependencies (Bun shown):
+
+```bash
+bun install
 ```
 
-To recreate this project with the same configuration:
+2) Copy environment template and fill values:
 
-```sh
-# recreate this project
-bun x sv@0.12.4 create --template minimal --types ts --add prettier eslint drizzle="database:sqlite+sqlite:better-sqlite3" sveltekit-adapter="adapter:node" tailwindcss="plugins:typography" mdsvex --install bun .
+```bash
+cp .env.example .env
 ```
 
-## Developing
+3) Start the dev server:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```bash
+bun run dev
 ```
 
-## Building
+Then open the printed URL (default http://localhost:5173).
 
-To create a production version of your app:
+## Scripts (see [package.json](package.json:1))
 
-```sh
-npm run build
-```
+- Dev server: `bun run dev`
+- Build: `bun run build`
+- Preview built app: `bun run preview`
+- Type/check Svelte: `bun run check`
+- Lint: `bun run lint`
+- Format: `bun run format`
+- Drizzle: `bun run db:push | db:generate | db:migrate | db:studio`
 
-You can preview the production build with `npm run preview`.
+## Environment
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Env keys used by the app live in [.env.example](.env.example:1). Common ones:
+
+- `DATABASE_URL` — SQLite connection string, e.g. `sqlite:///data/sqlite.db`.
+- `SESSION_SECRET` — long random string for session encryption.
+
+## Project structure (selected)
+
+- [src/routes/+page.svelte](src/routes/+page.svelte:1) — landing page.
+- [src/lib/server/db/schema.ts](src/lib/server/db/schema.ts:1) — drizzle schema.
+- [src/routes/layout.css](src/routes/layout.css:1) — global styles.
+- [plans/plan.md](plans/plan.md:1) — architecture/backlog notes.
+
+## Database & migrations
+
+- Configure drizzle in [drizzle.config.ts](drizzle.config.ts:1).
+- Apply schema to the database with `bun run db:push` (development convenience) or generate/apply SQL migrations with `bun run db:generate` + `bun run db:migrate`.
+- Explore the DB with `bun run db:studio`.
+
+## Development workflow
+
+1) Update env, install deps.
+2) Run `bun run dev` and iterate.
+3) Run `bun run check` and `bun run lint` before committing.
+4) Keep schema changes in drizzle and commit migrations.
+
+## Formatting & linting
+
+- Prettier + ESLint are configured; run `bun run format` to autoformat and `bun run lint` to validate.
+
+## Notes
+
+- Uses SvelteKit adapter-node (see [svelte.config.js](svelte.config.js:1)).
+- Tailwind v4 via `@tailwindcss/vite` is wired in [vite.config.ts](vite.config.ts:1).
