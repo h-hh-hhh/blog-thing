@@ -9,8 +9,9 @@
 	import * as NavigationMenu from '$lib/components/ui/navigation-menu';
 	import { Toggle } from '$lib/components/ui/toggle';
 	import LoginForm from '$lib/components/ui/loginform.svelte';
+	import UserGroup from '$lib/components/ui/usergroup.svelte';
 
-	let { layoutLoginForm, user } = $props();
+	let { layoutLoginForm, layoutLogoutForm, user } = $props();
 
 	const links = [
 		{ href: '/', label: 'Home' },
@@ -58,7 +59,7 @@
 			<NavigationMenu.List>
 				<NavigationMenu.Item>
 					{#if user}
-						<span class="text-sm text-muted-foreground">{user.email}</span>
+						<UserGroup data={{ form: layoutLogoutForm, user: user }} />
 					{:else}
 						<LoginForm data={{ form: layoutLoginForm }} />
 					{/if}
