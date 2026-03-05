@@ -37,7 +37,10 @@ Thumbs.db
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# SQLite / local DBs
+# SQLite / local DBs (keep repo clean; allow committed example/template files)
+data/
+uploads/
+posts/
 *.db
 *.sqlite
 *.sqlite-journal

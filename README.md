@@ -5,7 +5,7 @@ Somewhat vibecoded blog app with mdsvex/markdown rendering, built on SvelteKit a
 ## Overview
 
 - SvelteKit app using mdsvex for markdown+Svelte posts, styled with shadcn-svelte.
-- SQLite via drizzle-orm; current demo schema lives in [src/lib/server/db/schema.ts](src/lib/server/db/schema.ts:1).
+- SQLite via drizzle-orm; current demo schema lives in [src/lib/server/db/schema.ts](src/lib/server/db/schema.ts).
 - Bun-based tooling (can use pnpm/npm if you prefer).
 
 ## Prerequisites
@@ -34,9 +34,15 @@ bun run dev
 
 Then open the printed URL (default http://localhost:5173).
 
+4) (Optional) Create the data dirs used by defaults:
+
+```bash
+mkdir -p data uploads posts
+```
+
 ## Docker
 
-Build and run with Docker Compose (uses [Dockerfile](Dockerfile:1) + [docker-compose.yml](docker-compose.yml:1)). The container runs the built SvelteKit server (`node build/index.js`).
+Build and run with Docker Compose (uses [Dockerfile](Dockerfile) + [docker-compose.yml](docker-compose.yml)). The container runs the built SvelteKit server (`node build/index.js`).
 
 ```bash
 docker compose up --build
@@ -46,6 +52,7 @@ The app listens on port 3000. Data volumes:
 
 - `./data` -> `/data` (for SQLite db, etc.)
 - `./uploads` -> `/uploads` (for uploaded assets)
+- `./posts` -> `/posts` (for mdsvex/markdown sources)
 
 Stop and clean containers/images/volumes with:
 
@@ -53,7 +60,7 @@ Stop and clean containers/images/volumes with:
 docker compose down
 ```
 
-## Scripts (see [package.json](package.json:1))
+## Scripts (see [package.json](package.json))
 
 - Dev server: `bun run dev`
 - Build: `bun run build`
@@ -62,24 +69,42 @@ docker compose down
 - Lint: `bun run lint`
 - Format: `bun run format`
 - Drizzle: `bun run db:push | db:generate | db:migrate | db:studio`
+- Bootstrap admin: `bun run bootstrap:admin` (see below)
+
+### Bootstrap admin user
+
+1) Set `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `DATABASE_PATH` in your environment (or `.env`).
+2) Run the script:
+
+```bash
+bun run bootstrap:admin
+```
+
+This inserts an admin row if it does not exist (no-op on conflict) using [`scripts/bootstrap-admin.ts`](scripts/bootstrap-admin.ts). Passwords are hashed with bcrypt and stored in the DB defined by `DATABASE_PATH`.
 
 ## Environment
 
-Env keys used by the app live in [.env.example](.env.example:1). Common ones:
+Env keys used by the app live in [.env.example](.env.example). Common ones:
 
-- `DATABASE_URL` — SQLite connection string, e.g. `sqlite:///data/sqlite.db`.
+- `DATABASE_PATH` — SQLite connection string. Default dev uses a relative path `./data/dev.sqlite` so files stay in-repo.
 - `SESSION_SECRET` — long random string for session encryption.
+- `UPLOADS_DIR` — relative path for uploaded assets (default `./uploads`).
+- `POSTS_DIR` — relative path for stored post files (default `./posts`).
+
+For in-memory testing, use `DATABASE_PATH=sqlite::memory:` (data lasts only for the process lifetime).
 
 ## Project structure (selected)
 
-- [src/routes/+page.svelte](src/routes/+page.svelte:1) — landing page.
-- [src/lib/server/db/schema.ts](src/lib/server/db/schema.ts:1) — drizzle schema.
-- [src/routes/layout.css](src/routes/layout.css:1) — global styles.
-- [plans/plan.md](plans/plan.md:1) — architecture/backlog notes.
+- [src/routes/+page.svelte](src/routes/+page.svelte) — landing page.
+- [src/lib/server/db/schema.ts](src/lib/server/db/schema.ts) — drizzle schema.
+- [src/routes/layout.css](src/routes/layout.css) — global styles.
+- [plans/plan.md](plans/plan.md) — architecture/backlog notes.
+
+Content files live under the directory pointed to `POSTS_DIR` (default `./posts`) and are rendered with mdsvex/markdown.
 
 ## Database & migrations
 
-- Configure drizzle in [drizzle.config.ts](drizzle.config.ts:1).
+- Configure drizzle in [drizzle.config.ts](drizzle.config.ts).
 - Apply schema to the database with `bun run db:push` (development convenience) or generate/apply SQL migrations with `bun run db:generate` + `bun run db:migrate`.
 - Explore the DB with `bun run db:studio`.
 
@@ -96,5 +121,5 @@ Env keys used by the app live in [.env.example](.env.example:1). Common ones:
 
 ## Notes
 
-- Uses SvelteKit adapter-node (see [svelte.config.js](svelte.config.js:1)).
-- Tailwind v4 via `@tailwindcss/vite` is wired in [vite.config.ts](vite.config.ts:1).
+- Uses SvelteKit adapter-node (see [svelte.config.js](svelte.config.js)).
+- Tailwind v4 via `@tailwindcss/vite` is wired in [vite.config.ts](vite.config.ts).
