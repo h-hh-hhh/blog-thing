@@ -9,9 +9,9 @@
 		CardTitle
 	} from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
-    import PlusIcon from '@lucide/svelte/icons/plus';
-    import EditIcon from '@lucide/svelte/icons/edit';
-    import XIcon from '@lucide/svelte/icons/x';
+	import PlusIcon from '@lucide/svelte/icons/plus';
+	import EditIcon from '@lucide/svelte/icons/edit';
+	import XIcon from '@lucide/svelte/icons/x';
 
 	//const props = $props();
 	//let { data } = props;
@@ -28,16 +28,22 @@
 	<CardHeader>
 		<div class="flex flex-row gap-1">
 			<Badge variant="outline">Tag 1</Badge>
-			<Badge variant="outline"><XIcon />Tag 2</Badge>
-			<Badge variant="outline"><XIcon />Tag 3</Badge>
-			<Badge variant="outline-dashed" role="button">
-                <PlusIcon />
-            </Badge>
+			<Badge variant="outline">
+				<button
+					class="rounded-full ring-offset-background outline-none hover:bg-muted"
+					aria-label="Remove tag"
+				>
+					<XIcon class="size-3" />
+				</button>
+				Tag 2
+			</Badge>
+			<Badge variant="outline-dashed" class="hover:bg-muted" role="button">
+				<PlusIcon />
+			</Badge>
 		</div>
 		<CardTitle class="text-3xl">Featured Post Title</CardTitle>
-		<CardDescription
-			>A very long featured post summary that describes the post.</CardDescription
-		>
+		<CardDescription>A very long featured post summary that describes the post.</CardDescription>
+		<CardDescription>by admin</CardDescription>
 	</CardHeader>
 	<CardContent>
 		<p class="text-muted-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
