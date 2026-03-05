@@ -40,6 +40,7 @@
 		</Dialog.Header>
 
 		<form method="POST" action="/auth/login" use:enhance class="space-y-5">
+			<input type="hidden" name="csrf" value={$formData.csrf} />
 			<Form.Field {form} name="email">
 				<Form.Control>
 					{#snippet children({ props })}

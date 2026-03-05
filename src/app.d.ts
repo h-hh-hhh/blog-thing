@@ -6,6 +6,7 @@ declare global {
 		interface Locals {
 			session: import('$lib/server/auth/session').SessionData | null;
 			user: import('$lib/server/auth/session').SessionUser | null;
+			csrfToken?: string;
 		}
 		// interface PageData {}
 		// interface PageState {}

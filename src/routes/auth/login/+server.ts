@@ -7,13 +7,29 @@ import { users } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
 import {
+	CSRF_COOKIE_NAME,
+	CSRF_HEADER_NAME,
 	SESSION_COOKIE_NAME,
 	createSessionValue,
-	getSessionCookieOptions
+	getSessionCookieOptions,
+	verifyCsrfToken
 } from '$lib/server/auth/session';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
+	const csrfCookie = cookies.get(CSRF_COOKIE_NAME);
+	const csrfHeader = request.headers.get(CSRF_HEADER_NAME);
 	const form = await superValidate(request, zod4(loginSchema), { id: 'login-layout' });
+
+	const submittedToken = csrfHeader ?? form.data.csrf;
+	if (!submittedToken || !csrfCookie || submittedToken !== csrfCookie) {
+		setError(form, 'csrf', 'Invalid CSRF token', { status: 403, overwrite: true });
+		return actionResult('failure', { form }, { status: 403 });
+	}
+
+	if (!verifyCsrfToken(submittedToken)) {
+		setError(form, 'csrf', 'Invalid CSRF token', { status: 403, overwrite: true });
+		return actionResult('failure', { form }, { status: 403 });
+	}
 
 	if (!form.valid) {
 		return actionResult('failure', { form }, { status: 400 });

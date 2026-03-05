@@ -97,3 +97,51 @@ export const getSessionClearOptions = () => ({
 	secure: process.env.NODE_ENV === 'production',
 	maxAge: 0
 });
+
+const getCsrfSecret = () => process.env.CSRF_SECRET ?? process.env.SESSION_SECRET;
+
+export const CSRF_COOKIE_NAME = 'csrf_token';
+export const CSRF_HEADER_NAME = 'x-csrf-token';
+export const CSRF_TTL_SECONDS = 60 * 60 * 2;
+
+export const createCsrfToken = () => {
+	const secret = getCsrfSecret();
+	if (!secret) {
+		throw new Error('CSRF_SECRET or SESSION_SECRET is not set');
+	}
+	const nonce = base64UrlEncode(randomBytes(24));
+	const issuedAt = Math.floor(Date.now() / 1000);
+	const payload = base64UrlEncode(JSON.stringify({ nonce, issuedAt }));
+	const signature = base64UrlEncode(createHmac('sha256', secret).update(payload).digest());
+	return `${payload}.${signature}`;
+};
+
+export const verifyCsrfToken = (token: string | null | undefined) => {
+	if (!token) return false;
+	const secret = getCsrfSecret();
+	if (!secret) return false;
+	const [payload, signature] = token.split('.');
+	if (!payload || !signature) return false;
+	const expected = base64UrlEncode(createHmac('sha256', secret).update(payload).digest());
+	const expectedBuffer = Buffer.from(expected);
+	const signatureBuffer = Buffer.from(signature);
+	if (expectedBuffer.length !== signatureBuffer.length) return false;
+	if (!timingSafeEqual(expectedBuffer, signatureBuffer)) return false;
+	try {
+		const decoded = base64UrlDecode(payload).toString('utf-8');
+		const data = JSON.parse(decoded) as { nonce: string; issuedAt: number };
+		const now = Math.floor(Date.now() / 1000);
+		if (!data.issuedAt || now - data.issuedAt > CSRF_TTL_SECONDS) return false;
+		return typeof data.nonce === 'string' && data.nonce.length > 0;
+	} catch {
+		return false;
+	}
+};
+
+export const getCsrfCookieOptions = () => ({
+	path: '/',
+	httpOnly: false,
+	sameSite: 'lax' as const,
+	secure: process.env.NODE_ENV === 'production',
+	maxAge: CSRF_TTL_SECONDS
+});
