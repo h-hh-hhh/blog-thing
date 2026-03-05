@@ -6,6 +6,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { loginSchema } from '$lib/db/schema';
+	import { invalidateAll } from '$app/navigation';
 
 	const props = $props();
 	let { data } = props;
@@ -14,14 +15,15 @@
 	const form = superForm(data.form, {
 		id: 'login-layout',
 		validators: zod4Client(loginSchema),
-		applyAction: false, 
-    	invalidateAll: false,
-		onResult: ({ result }) => {
+		applyAction: false,
+		invalidateAll: false,
+		onResult: async ({ result }) => {
 			if (result.type === 'failure' && result.data) {
 				form.errors.set(result.data.form.errors);
 				form.message.set(result.data.form.message);
 			} else if (result.type === 'success') {
 				open = false;
+				await invalidateAll();
 			}
 		}
 	});

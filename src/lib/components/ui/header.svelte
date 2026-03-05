@@ -2,37 +2,19 @@
 	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
-	import MoonIcon from '@lucide/svelte/icons/moon';
-	import SunIcon from '@lucide/svelte/icons/sun';
 	import { siteTitle } from '$lib/config/site';
 	import { Button } from '$lib/components/ui/button';
 	import * as NavigationMenu from '$lib/components/ui/navigation-menu';
-	import { Toggle } from '$lib/components/ui/toggle';
-	import LoginForm from '$lib/components/ui/loginform.svelte';
-	import UserGroup from '$lib/components/ui/usergroup.svelte';
+	import LoginForm from '$lib/components/ui/login-form.svelte';
+	import UserGroup from '$lib/components/ui/user-group.svelte';
+	import ModeSwitcher from '$lib/components/ui/mode-switcher.svelte';
 
 	let { layoutLoginForm, layoutLogoutForm, user } = $props();
 
-	const links = [
-		{ href: '/', label: 'Home' }
-	] as const;
-	let isDark = $state(true);
-
-	const applyTheme = (dark: boolean) => {
-		if (!browser) return;
-		document.documentElement.classList.toggle('dark', dark);
-		localStorage.setItem('theme', dark ? 'dark' : 'light');
-	};
+	const links = [{ href: '/', label: 'Home' }] as const;
 
 	onMount(() => {
 		if (!browser) return;
-		const stored = localStorage.getItem('theme');
-		isDark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-		applyTheme(isDark);
-	});
-
-	$effect(() => {
-		applyTheme(isDark);
 	});
 </script>
 
@@ -64,14 +46,8 @@
 					{/if}
 				</NavigationMenu.Item>
 				<NavigationMenu.Item>
-					<Toggle variant="outline" size="sm" aria-label="Toggle dark mode" bind:pressed={isDark}>
-						{#if isDark}
-							<SunIcon />
-						{:else}
-							<MoonIcon />
-						{/if}
-					</Toggle></NavigationMenu.Item
-				>
+					<ModeSwitcher />
+				</NavigationMenu.Item>
 			</NavigationMenu.List>
 		</NavigationMenu.Root>
 	</div>
