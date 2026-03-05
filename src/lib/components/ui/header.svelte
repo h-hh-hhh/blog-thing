@@ -14,8 +14,7 @@
 	let { layoutLoginForm, layoutLogoutForm, user } = $props();
 
 	const links = [
-		{ href: '/', label: 'Home' },
-		{ href: '/auth/login', label: 'Log in' }
+		{ href: '/', label: 'Home' }
 	] as const;
 	let isDark = $state(true);
 
