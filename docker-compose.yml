@@ -11,6 +11,7 @@ services:
     volumes:
       - ./data:/data
       - ./uploads:/uploads
+      - ./posts:/posts
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000/ || exit 1"]
