@@ -30,7 +30,7 @@
 	</div>
 	<div class="flex flex-3/4 flex-col justify-between">
 		<div class="flex flex-col gap-6">
-			<CardHeader>
+			<CardHeader class="pl-0">
 				<CardTitle class="text-3xl pb-2">Post Title</CardTitle>
 				<div class="flex flex-row gap-1">
 					<Badge variant="outline">Tag 1</Badge>
@@ -48,11 +48,11 @@
 					</Badge>
 				</div>
 			</CardHeader>
-			<CardContent>
+			<CardContent class="pl-0">
 				<p class="text-muted-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
 			</CardContent>
 		</div>
-		<CardFooter>
+		<CardFooter class="pl-0">
 			<div class="flex flex-row justify-between items-center w-full">
 				<div class="flex flex-col gap-1">
 					<p class="text-muted-foreground text-xs text-left">by admin</p>
