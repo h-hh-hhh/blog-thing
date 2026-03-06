@@ -22,7 +22,7 @@
 		<span class="text-sm text-muted-foreground">{data.user.email}</span>
 		<form action="/auth/logout" method="POST" use:enhance>
 			<input type="hidden" name="csrf" value={$formData.csrf} />
-			<Button type="submit" variant="outline" size="sm" disabled={$delayed}>
+			<Button class="cursor-pointer" type="submit" variant="outline" size="sm" disabled={$delayed}>
 				{$delayed ? 'Signing out...' : 'Sign Out'}
 			</Button>
 		</form>

@@ -33,7 +33,7 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Trigger>
-		<Button variant="outline" size="sm">Sign In</Button>
+		<Button class="cursor-pointer" variant="outline" size="sm">Sign In</Button>
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-100">
 		<Dialog.Header>
@@ -74,7 +74,7 @@
 			</Form.Field>
 
 			<Dialog.Footer class="pt-2">
-				<Button type="submit" size="sm" class="w-full" disabled={$delayed}>
+				<Button type="submit" size="sm" class="w-full cursor-pointer" disabled={$delayed}>
 					{$delayed ? 'Authenticating...' : 'Sign In'}
 				</Button>
 			</Dialog.Footer>
