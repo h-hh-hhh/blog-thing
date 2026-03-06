@@ -20,7 +20,7 @@
 	//let { data } = props;
 </script>
 
-<Card class="overflow-hidden">
+<Card class="group relative overflow-hidden transition-all hover:shadow-md hover:bg-accent/70 cursor-pointer">
 	<div class="w-full p-6 pt-1 pb-0">
 		<img
 			src="https://picsum.photos/800"
@@ -31,17 +31,17 @@
 	<CardHeader>
 		<CardTitle class="text-4xl py-2">Featured Post Title</CardTitle>
 		<div class="flex flex-row gap-1">
-			<Badge variant="outline">Tag 1</Badge>
-			<Badge variant="outline">
+			<Badge class="bg-card" variant="outline">Tag 1</Badge>
+			<Badge class="bg-card" variant="outline">
 				<button
-					class="rounded-full ring-offset-background outline-none hover:bg-muted"
+					class="rounded-full ring-offset-background outline-none hover:bg-accent cursor-pointer"
 					aria-label="Remove tag"
 				>
 					<XIcon class="size-3" />
 				</button>
 				Tag 2
 			</Badge>
-			<Badge variant="outline-dashed" class="hover:bg-muted" role="button">
+			<Badge variant="outline-dashed" class="bg-card cursor-pointer hover:bg-accent" role="button">
 				<PlusIcon />
 			</Badge>
 		</div>
@@ -56,8 +56,8 @@
 				<CardDescription class="flex items-center gap-1.5 text-xs text-left"><CalendarIcon class="size-4" />2026-01-01<ClockIcon class="size-4" />14:00</CardDescription>
 			</div>
 			<div class="flex gap-2">
-				<Button class="icon" variant="outline"><EditIcon /></Button>
-				<Button>Read Full Post<ChevronRightIcon /></Button>
+				<Button class="cursor-pointer" size="icon" variant="outline"><EditIcon /></Button>
+				<Button class="cursor-pointer">Read Full Post<ChevronRightIcon /></Button>
 			</div>
 		</div>
 	</CardFooter>
