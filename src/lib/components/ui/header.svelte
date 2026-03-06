@@ -20,7 +20,7 @@
 
 <header class="sticky top-0 z-30 w-full border-b bg-card/80 backdrop-blur">
 	<div class="mx-auto flex h-14 max-w-5xl items-center gap-6 px-4 sm:px-6 lg:px-8">
-		<a href={resolve('/')} class="text-sm font-semibold tracking-tight">
+		<a href={resolve('/')} class="text-lg font-semibold tracking-tight">
 			{siteTitle}
 		</a>
 
