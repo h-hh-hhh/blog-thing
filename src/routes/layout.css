@@ -119,3 +119,38 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .code-block {
+    @apply relative;
+  }
+
+  .code-block__pre {
+    @apply bg-muted/60 text-foreground;
+  }
+
+  .code-block__pre code {
+    @apply bg-transparent p-0 text-[0.85rem] leading-6;
+  }
+
+  .code-block__pre [data-line] {
+    @apply px-4;
+  }
+
+  .code-block__pre [data-line]:before {
+    content: attr(data-line);
+    @apply mr-4 inline-block w-6 text-right text-xs text-muted-foreground/70;
+  }
+
+  .code-block__pre[data-line-numbers] {
+    @apply pl-2;
+  }
+
+  pre[class*='language-'] {
+    @apply my-6 overflow-x-auto rounded-xl border border-border bg-muted/50 px-4 py-4 font-mono text-sm shadow-sm;
+  }
+
+  pre[class*='language-'] code {
+    @apply bg-transparent p-0 text-[0.85rem] leading-6;
+  }
+}
