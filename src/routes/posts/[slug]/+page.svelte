@@ -5,7 +5,7 @@
 	const Content = data.content;
 </script>
 
-<article class="blog-post prose prose-slate dark:prose-invert max-w-none">
+<div class="max-w-3xl mx-auto py-10">
 	<header>
 		<h1>{data.post.title}</h1>
 		<div class="meta">
@@ -18,8 +18,4 @@
 	<div class="content-wrapper">
 		<Content />
 	</div>
-
-	<footer>
-		<h3>Related Posts</h3>
-	</footer>
-</article>
+</div>
