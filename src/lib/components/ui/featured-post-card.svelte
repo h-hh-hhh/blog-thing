@@ -20,7 +20,7 @@
 	//let { data } = props;
 </script>
 
-<Card class="group relative overflow-hidden transition-all hover:shadow-md hover:bg-accent/70 cursor-pointer">
+<Card class="group relative overflow-hidden hover:bg-accent/70 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02]">
 	<div class="w-full p-6 pt-1 pb-0">
 		<img
 			src="https://picsum.photos/800"
