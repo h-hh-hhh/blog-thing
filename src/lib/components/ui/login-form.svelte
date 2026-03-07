@@ -8,10 +8,10 @@
 	import { loginSchema } from '$lib/db/schema';
 	import { invalidateAll } from '$app/navigation';
 
-	const props = $props();
-	let { data } = props;
+	let { data } = $props();
 	let open = $state(false);
 
+	// svelte-ignore state_referenced_locally
 	const form = superForm(data.form, {
 		id: 'login-layout',
 		validators: zod4Client(loginSchema),
