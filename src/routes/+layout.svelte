@@ -13,7 +13,7 @@
 <div class="flex min-h-screen flex-col bg-background text-foreground">
 	<ModeWatcher />
 	<Header layoutLoginForm={data.layoutLoginForm} layoutLogoutForm={data.layoutLogoutForm} user={data.user} />
-	<main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10 sm:px-6 lg:px-8">
+	<main class="mx-auto w-full max-w-5xl flex-1 px-4 sm:px-6 lg:px-8">
 		{@render children()}
 	</main>
 	<Footer />
