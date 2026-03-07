@@ -20,7 +20,7 @@
 	//let { data } = props;
 </script>
 
-<Card class="group relative overflow-hidden hover:bg-accent/70 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02]">
+<Card class="group relative overflow-hidden hover:bg-accent/70 cursor-pointer transition-all duration-200 hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02]">
 	<div class="w-full p-6 pt-1 pb-0">
 		<img
 			src="https://picsum.photos/800"
@@ -31,13 +31,13 @@
 	<CardHeader>
 		<CardTitle class="text-4xl py-2">Featured Post Title</CardTitle>
 		<div class="flex flex-row gap-1">
-			<Badge class="bg-card" variant="outline">Tag 1</Badge>
-			<Badge class="bg-card" variant="outline">
+			<Badge class="cursor-default" variant="outline">Tag 1</Badge>
+			<Badge class="cursor-default" variant="outline">
 				<button
-					class="rounded-full ring-offset-background outline-none hover:bg-accent cursor-pointer"
+					class="rounded-full ring-offset-background outline-none hover:bg-accent"
 					aria-label="Remove tag"
 				>
-					<XIcon class="size-3" />
+					<XIcon class="size-3 cursor-pointer" />
 				</button>
 				Tag 2
 			</Badge>

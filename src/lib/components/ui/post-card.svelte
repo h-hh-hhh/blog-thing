@@ -20,7 +20,7 @@
 	//let { data } = props;
 </script>
 
-<Card class="flex flex-row group relative overflow-hidden hover:bg-accent/70 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02]">
+<Card class="flex flex-row group relative overflow-hidden hover:bg-accent/70 cursor-pointer transition-all duration-200 hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02]">
 	<div class="flex-1/4 relative pl-6 h-full">
 		<img
 			src="https://picsum.photos/800"
@@ -33,17 +33,17 @@
 			<CardHeader class="pl-0">
 				<CardTitle class="text-3xl pb-2">Post Title</CardTitle>
 				<div class="flex flex-row gap-1">
-					<Badge variant="outline">Tag 1</Badge>
-					<Badge variant="outline">
+					<Badge class="cursor-default" variant="outline">Tag 1</Badge>
+					<Badge class="cursor-default" variant="outline">
 						<button
-							class="rounded-full ring-offset-background outline-none hover:bg-muted"
+							class="rounded-full ring-offset-background outline-none hover:bg-accent"
 							aria-label="Remove tag"
 						>
-							<XIcon class="size-3" />
+							<XIcon class="size-3 cursor-pointer" />
 						</button>
 						Tag 2
 					</Badge>
-					<Badge variant="outline-dashed" class="hover:bg-muted" role="button">
+					<Badge variant="outline-dashed" class="bg-card cursor-pointer hover:bg-accent" role="button">
 						<PlusIcon />
 					</Badge>
 				</div>
