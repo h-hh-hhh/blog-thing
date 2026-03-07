@@ -5,9 +5,9 @@
 	import { siteTitle } from '$lib/config/site';
 	import { Button } from '$lib/components/ui/button';
 	import * as NavigationMenu from '$lib/components/ui/navigation-menu';
-	import LoginForm from '$lib/components/ui/login-form.svelte';
-	import UserGroup from '$lib/components/ui/user-group.svelte';
-	import ModeSwitcher from '$lib/components/ui/mode-switcher.svelte';
+	import LoginForm from '$lib/components/login-form.svelte';
+	import UserGroup from '$lib/components/user-group.svelte';
+	import ModeSwitcher from '$lib/components/mode-switcher.svelte';
 
 	let { layoutLoginForm, layoutLogoutForm, user } = $props();
 

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import Header from '$lib/components/ui/header.svelte';
-	import Footer from '$lib/components/ui/footer.svelte';
+	import Header from '$lib/components/header.svelte';
+	import Footer from '$lib/components/footer.svelte';
 	import { ModeWatcher } from "mode-watcher";
 
 	let { data, children } = $props();
