@@ -130,7 +130,23 @@
   }
 
   .code-block__pre code {
-    @apply bg-transparent p-0 text-[0.85rem] leading-6;
+    @apply bg-transparent p-0 text-[0.85rem] leading-6 whitespace-pre-wrap break-all;
+  }
+
+  .code-block__pre [data-line] {
+    @apply px-4;
+  }
+
+  .code-block__pre:not([data-line-numbers]):not([data-prefix]) [data-line] {
+    @apply pl-10 pr-4;
+  }
+
+  .code-block__title {
+    @apply rounded-t-xl border border-border bg-muted/80 px-6 py-2.25 text-xs font-mono font-medium tracking-wide text-muted-foreground;
+  }
+
+  .code-block[data-title] .code-block__pre {
+    @apply rounded-t-none border-t-0;
   }
 
   .code-block__pre [data-line] {
@@ -139,15 +155,34 @@
 
   .code-block__pre [data-line]:before {
     content: attr(data-line);
-    @apply mr-4 inline-block w-6 text-right text-xs text-muted-foreground/70;
+    @apply mr-4 inline-block w-4 text-right text-sm text-muted-foreground/70;
+  }
+
+  .code-block__pre[data-prefix] [data-prefix]:before {
+    content: attr(data-prefix);
+    @apply mr-2 pr-2 inline-block w-6 text-right text-muted-foreground/70;
   }
 
   .code-block__pre[data-line-numbers] {
-    @apply pl-2;
+    @apply pl-0;
+  }
+
+  .code-block__pre[data-line-numbers] [data-line] {
+    @apply pl-0;
+  }
+
+  .shiki,
+  .shiki span {
+    color: var(--shiki-light);
+  }
+
+  .dark .shiki,
+  .dark .shiki span {
+    color: var(--shiki-dark);
   }
 
   pre[class*='language-'] {
-    @apply my-6 overflow-x-auto rounded-xl border border-border bg-muted/50 px-4 py-4 font-mono text-sm shadow-sm;
+    @apply my-6 overflow-x-auto rounded-xl border border-border bg-muted/50 px-6 py-6 font-mono text-sm shadow-sm;
   }
 
   pre[class*='language-'] code {

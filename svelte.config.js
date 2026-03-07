@@ -22,6 +22,7 @@ const highlighter = await createHighlighter({
 		'shellscript',
 		'sql',
 		'svelte',
+		'text',
 		'toml',
 		'typescript',
 		'yaml'
@@ -29,14 +30,42 @@ const highlighter = await createHighlighter({
 });
 
 const parseCodeMeta = (meta) => {
-	if (!meta) return { showLineNumbers: false, title: undefined };
+	if (!meta) return { showLineNumbers: false, title: undefined, prefix: undefined };
 	const showLineNumbers = meta.includes('showLineNumbers');
-	const titleMatch = meta.match(/title="([^"]+)"/);
+	const titleMatch = meta.match(/title=(?:"([^"]+)"|'([^']+)')/);
+	const prefixMatch = meta.match(/prefix=(?:"([^"]+)"|'([^']+)'|(\S+))/);
 	return {
 		showLineNumbers,
-		title: titleMatch?.[1]
+		title: titleMatch?.[1] ?? titleMatch?.[2],
+		prefix: prefixMatch?.[1] ?? prefixMatch?.[2] ?? prefixMatch?.[3]
 	};
 };
+
+const normalizeLanguage = (lang) => {
+	if (!lang) return 'text';
+	const lowered = String(lang).toLowerCase();
+	const map = {
+		js: 'javascript',
+		jsx: 'javascript',
+		ts: 'typescript',
+		tsx: 'typescript',
+		sh: 'shellscript',
+		zsh: 'shellscript',
+		bash: 'bash',
+		yml: 'yaml'
+	};
+	return map[lowered] ?? lowered;
+};
+
+const addLineNumbers = (html) => {
+	let line = 1;
+	return html.replace(/<span class="line([^"]*)">/g, (_match, rest) => {
+		const current = line;
+		line += 1;
+		return `<span class="line${rest}" data-line="${current}">`;
+	});
+};
+
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -53,9 +82,9 @@ const config = {
 			layout: path.resolve('src/lib/components/markdown/layout.svelte'),
 			remarkPlugins: [remarkSvelteComponentImports],
 			highlight: {
-				highlighter: async (code, lang, meta) => {
-					const safeLang = lang ?? 'text';
-					const { showLineNumbers, title } = parseCodeMeta(meta);
+					highlighter: async (code, lang, meta) => {
+					const safeLang = normalizeLanguage(lang);
+					const { showLineNumbers, title, prefix } = parseCodeMeta(meta);
 					const html = highlighter.codeToHtml(code, {
 						lang: safeLang,
 						themes: {
@@ -64,14 +93,17 @@ const config = {
 						},
 						defaultColor: false
 					});
+					const useLineNumbers = showLineNumbers && !prefix;
+					const withLineMarkers = useLineNumbers ? addLineNumbers(html) : html;
 					const inner = escapeSvelte(
-						html
+						withLineMarkers
 							.replace(/^<pre[^>]*><code>/, '')
 							.replace(/<\/code><\/pre>\s*$/, '')
 					);
 					const dataTitle = title ? ` data-title="${escapeSvelte(title)}"` : '';
-					const dataLineNumbers = showLineNumbers ? ' data-line-numbers="true"' : '';
-					return `<Pre class="shiki"${dataTitle}${dataLineNumbers}><code class="language-${safeLang}">{@html \`${inner}\`}</code></Pre>`;
+					const dataLineNumbers = useLineNumbers ? ' data-line-numbers="true"' : '';
+					const dataPrefix = prefix ? ` data-prefix="${escapeSvelte(prefix)}"` : '';
+					return `<Pre class="shiki"${dataTitle}${dataLineNumbers}${dataPrefix}><code class="language-${safeLang}">{@html \`${inner}\`}</code></Pre>`;
 				}
 			},
 			rehypePlugins: [rehypeSvelteComponentTags]
