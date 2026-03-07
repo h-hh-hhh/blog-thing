@@ -1,12 +1,16 @@
 <script lang="ts">
-    import { page } from '$app/state';
+  import { page } from '$app/state';
 	import * as Empty from '$lib/components/ui/empty';
 </script>
 
 <Empty.Root>
   <Empty.Header>
     <Empty.Media variant="default">
-      <img src="/error.gif" alt="Error"/>
+      <img 
+        src="/error.gif" 
+        alt="Error"
+        class="rounded-xl border"
+      />
     </Empty.Media>
     <Empty.Title>Error {page.status}</Empty.Title>
     <Empty.Description>
