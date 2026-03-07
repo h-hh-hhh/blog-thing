@@ -33,7 +33,7 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Trigger>
-		<Button class="cursor-pointer" variant="outline" size="sm">Sign In</Button>
+		<Button class="cursor-pointer" variant="ghost" size="sm">Sign In</Button>
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-100">
 		<Dialog.Header>
