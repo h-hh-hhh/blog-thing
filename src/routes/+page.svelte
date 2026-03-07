@@ -3,7 +3,7 @@
 	import PostCard from '$lib/components/ui/post-card.svelte';
 </script>
 
-<div class="flex flex-col gap-3">
+<div class="flex flex-col gap-6">
 	<FeaturedPostCard />
 	<PostCard />
 	<PostCard />
