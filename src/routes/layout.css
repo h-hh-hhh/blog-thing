@@ -130,7 +130,7 @@
   }
 
   .code-block__pre code {
-    @apply bg-transparent p-0 text-[0.85rem] leading-6 whitespace-pre-wrap break-all;
+    @apply bg-transparent p-0 leading-6 whitespace-pre-wrap break-all;
   }
 
   .code-block__pre [data-line] {

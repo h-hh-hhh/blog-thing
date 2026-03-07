@@ -40,8 +40,8 @@
 <Button
   type="button"
   variant="outline"
-  size="icon"
-  class="rounded-md text-foreground hover:bg-background cursor-pointer"
+  size="icon-sm"
+  class="rounded-md bg-background/80 text-foreground hover:bg-background cursor-pointer"
   onclick={copy}
   aria-label={copied ? 'Copied' : 'Copy code'}
 >
@@ -52,9 +52,9 @@
       }`}
     >
       {#if iconName === 'check'}
-        <CheckIcon class="text-green-500" />
+        <CheckIcon class="size-3.5 text-green-500" />
       {:else}
-        <CopyIcon />
+        <CopyIcon class="size-3.5" />
       {/if}
     </span>
   </span>
