@@ -5,9 +5,9 @@
 	import { logoutSchema } from '$lib/db/schema';
 	import * as NavigationMenu from '$lib/components/ui/navigation-menu';
 
-	const props = $props();
-	let { data } = props;
+	let { data } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const form = superForm(data.form, {
 		id: 'logout-layout',
 		validators: zod4Client(logoutSchema),
