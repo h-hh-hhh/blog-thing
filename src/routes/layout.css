@@ -142,7 +142,7 @@
   }
 
   .code-block__title {
-    @apply rounded-t-xl border border-border bg-muted/80 px-6 py-2.25 text-xs font-mono font-medium tracking-wide text-muted-foreground;
+    @apply rounded-t-xl border border-border bg-muted/80 px-6 py-3 text-sm font-mono font-medium tracking-wide text-muted-foreground;
   }
 
   .code-block[data-title] .code-block__pre {
