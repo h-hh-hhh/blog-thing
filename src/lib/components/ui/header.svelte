@@ -28,7 +28,7 @@
 			<NavigationMenu.List>
 				{#each links as link (link.href)}
 					<NavigationMenu.Item>
-						<Button variant="ghost" href={resolve(link.href)}>
+						<Button variant="ghost" class="cursor-pointer" href={resolve(link.href)}>
 							{link.label}
 						</Button>
 					</NavigationMenu.Item>
