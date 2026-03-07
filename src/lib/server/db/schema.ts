@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 const now = () => sql`(unixepoch())`;
@@ -64,3 +64,38 @@ export const assets = sqliteTable('assets', {
 	uploadedBy: text('uploaded_by').references(() => users.id),
 	createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(now())
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+	posts: many(posts),
+	assets: many(assets)
+}));
+
+export const postsRelations = relations(posts, ({ many, one }) => ({
+	tags: many(postsToTags),
+	author: one(users, {
+		fields: [posts.authorId],
+		references: [users.id]
+	})
+}));
+
+export const tagsRelations = relations(tags, ({ many }) => ({
+	posts: many(postsToTags)
+}));
+
+export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
+	post: one(posts, {
+		fields: [postsToTags.postId],
+		references: [posts.id]
+	}),
+	tag: one(tags, {
+		fields: [postsToTags.tagId],
+		references: [tags.id]
+	})
+}));
+
+export const assetsRelations = relations(assets, ({ one }) => ({
+	uploader: one(users, {
+		fields: [assets.uploadedBy],
+		references: [users.id]
+	})
+}));
