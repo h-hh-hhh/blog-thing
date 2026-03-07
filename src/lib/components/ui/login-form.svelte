@@ -38,20 +38,20 @@
 	<Dialog.Content class="sm:max-w-100">
 		<Dialog.Header>
 			<Dialog.Title>Login</Dialog.Title>
-			<Dialog.Description>Enter your email below to login to your account.</Dialog.Description>
+			<Dialog.Description>Enter your name below to login to your account.</Dialog.Description>
 		</Dialog.Header>
 
 		<form method="POST" action="/auth/login" use:enhance class="space-y-5">
 			<input type="hidden" name="csrf" value={$formData.csrf} />
-			<Form.Field {form} name="email">
+			<Form.Field {form} name="name">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Email</Form.Label>
+						<Form.Label>Name</Form.Label>
 						<Input
-							type="email"
-							placeholder="you@example.com"
+							type="text"
+							placeholder="Your name"
 							{...props}
-							bind:value={$formData.email}
+							bind:value={$formData.name}
 						/>
 					{/snippet}
 				</Form.Control>

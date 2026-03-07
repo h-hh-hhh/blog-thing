@@ -7,12 +7,12 @@ import { Database } from 'bun:sqlite';
 import * as schema from '../src/lib/server/db/schema.js';
 
 async function main() {
-	const email = process.env.ADMIN_EMAIL;
+	const name = process.env.ADMIN_NAME;
 	const password = process.env.ADMIN_PASSWORD;
 	const databasePath = process.env.DATABASE_PATH;
 
-	if (!email || !password) {
-		console.error('ADMIN_EMAIL and ADMIN_PASSWORD must be set in the environment');
+	if (!name || !password) {
+		console.error('ADMIN_NAME and ADMIN_PASSWORD must be set in the environment');
 		process.exit(1);
 	}
 
@@ -29,13 +29,13 @@ async function main() {
 	await db
 		.insert(schema.users)
 		.values({
-			email,
+			name,
 			passwordHash,
 			role: 'admin'
 		})
-		.onConflictDoNothing({ target: schema.users.email });
+		.onConflictDoNothing({ target: schema.users.name });
 
-	console.log(`Ensured admin user exists for email ${email}`);
+	console.log(`Ensured admin user exists for name ${name}`);
 }
 
 main().catch((err) => {

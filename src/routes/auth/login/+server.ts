@@ -35,13 +35,13 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		return actionResult('failure', { form }, { status: 400 });
 	}
 
-	const email = form.data.email;
+	const name = form.data.name;
 	const password = form.data.password;
 
-	const user = (await db.select().from(users).where(eq(users.email, email)))[0];
+	const user = (await db.select().from(users).where(eq(users.name, name)))[0];
 
 	if (!user) {
-		setError(form, 'email', 'User does not exist', { status: 403, overwrite: true });
+		setError(form, 'name', 'User does not exist', { status: 403, overwrite: true });
 		return actionResult('failure', { form }, { status: 403 });
 	}
 
@@ -54,7 +54,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 	const sessionValue = createSessionValue({
 		id: user.id,
-		email: user.email,
+		name: user.name,
 		role: user.role
 	});
 

@@ -19,7 +19,7 @@
 
 <NavigationMenu.Root>
 	<NavigationMenu.List>
-		<span class="text-sm text-muted-foreground">{data.user.email}</span>
+		<span class="text-sm text-muted-foreground">{data.user.name}</span>
 		<form action="/auth/logout" method="POST" use:enhance>
 			<input type="hidden" name="csrf" value={$formData.csrf} />
 			<Button class="cursor-pointer" type="submit" variant="outline" size="sm" disabled={$delayed}>
