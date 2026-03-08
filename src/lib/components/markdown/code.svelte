@@ -4,7 +4,7 @@
 
 <code
   {...props}
-  class={`relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm ${className}`.trim()}
+  class={`relative rounded bg-muted px-1 py-1 text-[0.9em] font-mono ${className}`.trim()}
 >
   {@render children?.()}
 </code>
