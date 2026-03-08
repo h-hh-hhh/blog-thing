@@ -21,7 +21,7 @@
 	{#if props['data-title']}
 		<div class="code-block__title">{props['data-title']}</div>
 	{/if}
-	<div class={`absolute ${props['data-title'] ? 'top-16.5' : 'top-5.25'} right-5.25 z-10 opacity-0 transition-opacity group-hover:opacity-100`}>
+	<div class={`absolute ${props['data-title'] ? 'top-1.75 right-1.75' : 'top-5.25 right-5.25'} z-10 opacity-0 transition-opacity group-hover:opacity-100`}>
 		<CodeCopyButton text={codeText} />
 	</div>
 	<pre
