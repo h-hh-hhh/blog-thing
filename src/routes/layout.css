@@ -168,12 +168,12 @@
 
   .code-block__pre [data-line]:before {
     content: attr(data-line);
-    @apply mr-4 inline-block w-4 text-right text-sm text-muted-foreground/70;
+    @apply mr-4 inline-block w-6 text-right text-sm text-muted-foreground/70;
   }
 
   .code-block__pre[data-prefix] [data-prefix]:before {
     content: attr(data-prefix);
-    @apply mr-2 pr-2 inline-block w-6 text-right text-muted-foreground/70;
+    @apply mr-4 inline-block w-6 text-right text-muted-foreground/70;
   }
 
   .code-block__pre[data-line-numbers] {
