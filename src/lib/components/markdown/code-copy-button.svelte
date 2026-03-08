@@ -8,14 +8,7 @@
   let iconSwapTimeout: ReturnType<typeof setTimeout> | null = null;
   let isIconHidden = $state(false);
   let iconName = $state<'copy' | 'check'>('copy');
-  let iconInitialized = $state(false);
-
   const updateIcon = (next: 'copy' | 'check') => {
-    if (!iconInitialized) {
-      iconName = next;
-      iconInitialized = true;
-      return;
-    }
     if (iconSwapTimeout) clearTimeout(iconSwapTimeout);
     isIconHidden = true;
     iconSwapTimeout = setTimeout(() => {
