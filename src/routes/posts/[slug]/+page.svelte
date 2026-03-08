@@ -39,7 +39,7 @@
 <header class="relative left-1/2 isolate -mt-24 w-screen -translate-x-1/2 overflow-hidden pt-24">
 	{#if data.post.heroImagePath}
 		<img
-			src="/uploads/{data.post.heroImagePath}"
+			src="{data.post.heroImagePath}"
 			alt=""
 			class="absolute inset-0 h-full w-full object-cover"
 		/>

@@ -27,7 +27,7 @@
 	{#if post.heroImagePath}
 		<div class="w-full p-6 pt-1 pb-0">
 			<img
-				src="/uploads/{post.heroImagePath}"
+				src="{post.heroImagePath}"
 				alt="Featured"
 				class="aspect-video w-full rounded-xl border object-cover"
 			/>

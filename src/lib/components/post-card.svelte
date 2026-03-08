@@ -27,7 +27,7 @@
 	{#if post.heroImagePath}
 		<div class="relative h-full flex-1/4 pl-6">
 			<img
-				src="/uploads/{post.heroImagePath}"
+				src="{post.heroImagePath}"
 				alt="Post"
 				class="aspect-square h-full w-full rounded-xl border object-cover"
 			/>
