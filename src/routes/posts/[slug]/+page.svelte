@@ -1,12 +1,40 @@
 <script lang="ts">
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
 	import ClockIcon from '@lucide/svelte/icons/clock';
+	import { siteDescription, siteOgImage, siteTitle, siteUrl, twitterHandle } from '$lib/config/site';
+	import { resolve } from '$app/paths';
 
 	let { data } = $props();
 
 	// svelte-ignore state_referenced_locally
 	const Content = data.content;
+
+	const postTitle = data.post.title ? `${data.post.title} | ${siteTitle}` : siteTitle;
+	const postDescription = data.post.summary || siteDescription;
+	const canonicalUrl = `${siteUrl}${resolve(`/posts/${data.post.slug}`)}`;
+	const heroPath = data.post.heroImagePath ? `/uploads/${data.post.heroImagePath}` : siteOgImage;
+	const ogImageUrl = `${siteUrl}${heroPath}`;
 </script>
+
+<svelte:head>
+	<title>{postTitle}</title>
+	<meta name="description" content={postDescription} />
+	<link rel="canonical" href={canonicalUrl} />
+
+	<meta property="og:title" content={postTitle} />
+	<meta property="og:description" content={postDescription} />
+	<meta property="og:image" content={ogImageUrl} />
+	<meta property="og:url" content={canonicalUrl} />
+	<meta property="og:type" content="article" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={postTitle} />
+	<meta name="twitter:description" content={postDescription} />
+	<meta name="twitter:image" content={ogImageUrl} />
+	{#if twitterHandle}
+		<meta name="twitter:site" content={twitterHandle} />
+	{/if}
+</svelte:head>
 
 <header class="relative left-1/2 isolate -mt-24 w-screen -translate-x-1/2 overflow-hidden pt-24">
 	{#if data.post.heroImagePath}
