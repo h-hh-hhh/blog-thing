@@ -15,6 +15,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			author: true
 		}
 	});
+	
     if (!post) {
         throw error(404, 'Post not found in database');
     }

@@ -15,49 +15,73 @@
 	import ClockIcon from '@lucide/svelte/icons/clock';
 	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 	import XIcon from '@lucide/svelte/icons/x';
+	import { resolve } from '$app/paths';
 
-	//const props = $props();
-	//let { data } = props;
+	const props = $props();
+	let { post, user } = $derived(props);
 </script>
 
-<Card class="group relative overflow-hidden hover:bg-accent/70 cursor-pointer transition-all duration-200 hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02]">
-	<div class="w-full p-6 pt-1 pb-0">
-		<img
-			src="https://picsum.photos/800"
-			alt="Featured"
-			class="aspect-video w-full rounded-xl border object-cover"
-		/>
-	</div>
+<Card
+	class="group relative cursor-pointer overflow-hidden transition-all duration-200 hover:-translate-y-2 hover:scale-[1.02] hover:bg-accent/70 hover:shadow-xl"
+>
+	{#if post.heroImagePath}
+		<div class="w-full p-6 pt-1 pb-0">
+			<img
+				src="/uploads/{post.heroImagePath}"
+				alt="Featured"
+				class="aspect-video w-full rounded-xl border object-cover"
+			/>
+		</div>
+	{/if}
 	<CardHeader>
-		<CardTitle class="text-4xl py-2">Featured Post Title</CardTitle>
+		<CardTitle class={post.heroImagePath ? "py-2 text-6xl" : "py-2 text-8xl"}>
+			<h1>{post.title}</h1>
+		</CardTitle>
 		<div class="flex flex-row gap-1">
-			<Badge class="cursor-default" variant="outline">Tag 1</Badge>
-			<Badge class="cursor-default" variant="outline">
-				<button
-					class="rounded-full ring-offset-background outline-none hover:bg-accent"
-					aria-label="Remove tag"
+			{#each post.tag as tag (tag.slug)}
+				<Badge class="cursor-default" variant="outline">
+					{#if user && (user.role === 'admin' || user.id === post.author.id)}
+						<button
+							class="rounded-full ring-offset-background outline-none hover:bg-accent"
+							aria-label="Remove tag"
+						>
+							<XIcon class="size-3 cursor-pointer" />
+						</button>
+					{/if}
+					{tag.name}
+				</Badge>
+			{/each}
+			{#if user && (user.role === 'admin' || user.id === post.author.id)}
+				<Badge
+					variant="outline-dashed"
+					class="cursor-pointer bg-card hover:bg-accent"
+					role="button"
 				>
-					<XIcon class="size-3 cursor-pointer" />
-				</button>
-				Tag 2
-			</Badge>
-			<Badge variant="outline-dashed" class="bg-card cursor-pointer hover:bg-accent" role="button">
-				<PlusIcon />
-			</Badge>
+					<PlusIcon />
+				</Badge>
+			{/if}
 		</div>
 	</CardHeader>
 	<CardContent>
-		<p class="text-muted-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+		<p class="text-muted-foreground">{post.summary}</p>
 	</CardContent>
 	<CardFooter>
-		<div class="flex flex-row justify-between items-center w-full">
+		<div class="flex w-full flex-row items-center justify-between">
 			<div class="flex flex-col gap-1">
-				<p class="text-muted-foreground text-xs text-left">by admin</p>
-				<CardDescription class="flex items-center gap-1.5 text-xs text-left"><CalendarIcon class="size-4" />2026-01-01<ClockIcon class="size-4" />14:00</CardDescription>
+				<p class="text-left text-xs text-muted-foreground">by {post.author.name}</p>
+				<CardDescription class="flex items-center gap-1.5 text-left text-xs"
+					><CalendarIcon class="size-4" />{post.createdAt.toLocaleDateString()}<ClockIcon
+						class="size-4"
+					/>{post.createdAt.toLocaleTimeString()}</CardDescription
+				>
 			</div>
 			<div class="flex gap-2">
-				<Button class="cursor-pointer" size="icon" variant="outline"><EditIcon /></Button>
-				<Button class="cursor-pointer">Read Full Post<ChevronRightIcon /></Button>
+				{#if user && (user.role === 'admin' || user.id === post.author.id)}
+					<Button class="cursor-pointer" size="icon" variant="outline"><EditIcon /></Button>
+				{/if}
+				<Button class="cursor-pointer" href={resolve(`/posts/${post.slug}`)}
+					>Read Full Post<ChevronRightIcon /></Button
+				>
 			</div>
 		</div>
 	</CardFooter>
