@@ -1,7 +1,13 @@
 type Parent = { children?: Node[] };
-type ElementNode = { type: 'element'; tagName: string; children?: Node[] };
+type ElementNode = {
+  type: 'element';
+  tagName: string;
+  children?: Node[];
+  properties?: Record<string, unknown>;
+};
+type TextNode = { type: 'text'; value?: string };
 type HtmlNode = { type: 'html'; value: string };
-type Node = ElementNode | HtmlNode | Parent | { [key: string]: unknown };
+type Node = ElementNode | HtmlNode | TextNode | Parent | { [key: string]: unknown };
 
 const componentImports = {
   a: { name: 'A', path: '$lib/components/markdown/a.svelte' },
@@ -23,6 +29,7 @@ const componentImports = {
   pre: { name: 'Pre', path: '$lib/components/markdown/pre.svelte' },
   strong: { name: 'Strong', path: '$lib/components/markdown/strong.svelte' },
   table: { name: 'Table', path: '$lib/components/markdown/table.svelte' },
+  tasklistitem: { name: 'TaskListItem', path: '$lib/components/markdown/task-list-item.svelte' },
   tbody: { name: 'Tbody', path: '$lib/components/markdown/tbody.svelte' },
   td: { name: 'Td', path: '$lib/components/markdown/td.svelte' },
   th: { name: 'Th', path: '$lib/components/markdown/th.svelte' },
@@ -91,6 +98,60 @@ export const rehypeSvelteComponentTags = () => {
       if (element.type !== 'element') return;
       const nextTag = componentTagMap[element.tagName];
       if (nextTag) element.tagName = nextTag;
+    });
+  };
+};
+
+export const rehypeTaskListItems = () => {
+  return (tree: Node) => {
+    visit(tree, (node) => {
+      const element = node as ElementNode;
+      if (element.type !== 'element' || element.tagName !== 'li') return;
+      const children = Array.isArray(element.children) ? element.children : [];
+      const taskClass = (element.properties?.className as string[] | string | undefined) ?? [];
+      const hasTaskClass = Array.isArray(taskClass)
+        ? taskClass.includes('task-list-item')
+        : String(taskClass).split(' ').includes('task-list-item');
+      if (!hasTaskClass) return;
+
+      const paragraph = children.find(
+        (child) => (child as ElementNode).type === 'element' && (child as ElementNode).tagName === 'p'
+      ) as ElementNode | undefined;
+      if (!paragraph || !Array.isArray(paragraph.children)) return;
+
+      const paraChildren = paragraph.children;
+      const inputNode = paraChildren.find(
+        (child) => (child as ElementNode).type === 'element' && (child as ElementNode).tagName === 'input'
+      ) as ElementNode | undefined;
+      if (!inputNode) return;
+
+      const properties = inputNode.properties ?? {};
+      const inputType = String(properties.type ?? '');
+      if (inputType !== 'checkbox') return;
+
+      const isChecked =
+        Boolean(properties.checked) ||
+        (Array.isArray(properties.checked) && properties.checked.length > 0);
+
+      const labelParts = paraChildren.filter((child) => child !== inputNode);
+      const text = labelParts
+        .map((child) => {
+          const textNode = child as TextNode;
+          if (textNode.type === 'text') return textNode.value ?? '';
+          const htmlNode = child as HtmlNode;
+          if (htmlNode.type === 'html') return htmlNode.value ?? '';
+          return '';
+        })
+        .join('')
+        .replace(/^\s+/, '');
+
+      element.tagName = 'tasklistitem';
+      element.properties = {
+        ...element.properties,
+        checked: isChecked,
+        text
+      };
+      element.children = [];
     });
   };
 };

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @import "tw-animate-css";
+@import "katex/dist/katex.min.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -200,5 +201,41 @@
 
   pre[class*='language-'] code {
     @apply bg-transparent p-0 text-[0.85rem] leading-6;
+  }
+
+  .task-list-item {
+    @apply list-none pl-0;
+  }
+
+  .task-list-item input[type='checkbox'] {
+    @apply mr-2 align-middle accent-foreground;
+  }
+
+  .footnotes {
+    @apply mt-10 border-t border-border pt-6 text-sm text-muted-foreground;
+  }
+
+  .footnotes ol {
+    @apply mt-4 space-y-2 pl-6;
+  }
+
+  [data-footnote-ref] {
+    @apply font-mono text-xs text-muted-foreground;
+  }
+
+  [data-footnote-ref]::before {
+    content: '[';
+  }
+
+  [data-footnote-ref]::after {
+    content: ']';
+  }
+
+  [data-footnote-backref] {
+    @apply ml-2 text-xs text-muted-foreground;
+  }
+
+  .katex-display {
+    @apply my-6 overflow-x-auto;
   }
 }

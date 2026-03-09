@@ -3,11 +3,14 @@ import adapter from '@sveltejs/adapter-node';
 import path from 'path';
 import 'dotenv/config';
 import { createHighlighter } from 'shiki';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import {
-  rehypeSvelteComponentTags,
-  remarkSvelteComponentImports
+	rehypeSvelteComponentTags,
+	remarkSvelteComponentImports,
+	rehypeTaskListItems
 } from './src/lib/markdown/mdsvex-components.ts';
-
 const highlighter = await createHighlighter({
 	themes: ['github-light', 'github-dark'],
 	langs: [
@@ -68,6 +71,17 @@ const addLineNumbers = (html, startLine = 1) => {
 	});
 };
 
+const htmlMathPreprocess = () => ({
+	markup({ content, filename }) {
+		if (!filename || (!filename.endsWith('.md') && !filename.endsWith('.svx'))) return;
+		const displayPattern = /<p[^>]*>\s*\$\$([\s\S]+?)\$\$\s*<\/p>/gi;
+		const inlinePattern = /<p[^>]*>\s*\$([^$\n]+?)\$\s*<\/p>/gi;
+		const code = content
+			.replace(displayPattern, (_match, math) => `$$${math}$$`)
+			.replace(inlinePattern, (_match, math) => `$${math}$`);
+		return { code };
+	}
+});
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -79,10 +93,11 @@ const config = {
         }
 	},
 	preprocess: [
+		htmlMathPreprocess(),
 		mdsvex({
 			extensions: ['.svx', '.md'],
 			layout: path.resolve('src/lib/components/markdown/layout.svelte'),
-			remarkPlugins: [remarkSvelteComponentImports],
+			remarkPlugins: [remarkSvelteComponentImports, remarkGfm, remarkMath],
 			highlight: {
 				highlighter: async (code, lang, meta) => {
 					const safeLang = normalizeLanguage(lang);
@@ -108,7 +123,7 @@ const config = {
 					return `<Pre class="shiki"${dataTitle}${dataLineNumbers}${dataPrefix}><code class="language-${safeLang}">{@html \`${inner}\`}</code></Pre>`;
 				}
 			},
-			rehypePlugins: [rehypeSvelteComponentTags]
+			rehypePlugins: [rehypeTaskListItems, rehypeSvelteComponentTags, rehypeKatex]
 		})
 	],
 	extensions: ['.svelte', '.svx', '.md']

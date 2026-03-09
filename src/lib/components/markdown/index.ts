@@ -17,6 +17,7 @@ import p from '$lib/components/markdown/p.svelte';
 import pre from '$lib/components/markdown/pre.svelte';
 import strong from '$lib/components/markdown/strong.svelte';
 import table from '$lib/components/markdown/table.svelte';
+import taskListItem from '$lib/components/markdown/task-list-item.svelte';
 import tbody from '$lib/components/markdown/tbody.svelte';
 import td from '$lib/components/markdown/td.svelte';
 import th from '$lib/components/markdown/th.svelte';
@@ -44,6 +45,7 @@ export const components = {
   pre,
   strong,
   table,
+  taskListItem,
   tbody,
   td,
   th,
