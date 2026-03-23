@@ -3,14 +3,7 @@ import adapter from '@sveltejs/adapter-node';
 import path from 'path';
 import 'dotenv/config';
 import { createHighlighter } from 'shiki';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import {
-	rehypeSvelteComponentTags,
-	remarkSvelteComponentImports,
-	rehypeTaskListItems
-} from './src/lib/markdown/mdsvex-components.ts';
+import { mdsvexOptions } from './src/lib/markdown/mdsvex-options.ts';
 const highlighter = await createHighlighter({
 	themes: ['github-light', 'github-dark'],
 	langs: [
@@ -93,11 +86,8 @@ const config = {
         }
 	},
 	preprocess: [
-		htmlMathPreprocess(),
 		mdsvex({
-			extensions: ['.svx', '.md'],
-			layout: path.resolve('src/lib/components/markdown/layout.svelte'),
-			remarkPlugins: [remarkSvelteComponentImports, remarkGfm, remarkMath],
+			...mdsvexOptions,
 			highlight: {
 				highlighter: async (code, lang, meta) => {
 					const safeLang = normalizeLanguage(lang);
@@ -122,8 +112,7 @@ const config = {
 					const dataPrefix = prefix ? ` data-prefix="${escapeSvelte(prefix)}"` : '';
 					return `<Pre class="shiki"${dataTitle}${dataLineNumbers}${dataPrefix}><code class="language-${safeLang}">{@html \`${inner}\`}</code></Pre>`;
 				}
-			},
-			rehypePlugins: [rehypeTaskListItems, rehypeSvelteComponentTags, rehypeKatex]
+			}
 		})
 	],
 	extensions: ['.svelte', '.svx', '.md']
